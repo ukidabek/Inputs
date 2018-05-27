@@ -11,12 +11,6 @@ namespace BaseGameLogic.Inputs
     [CustomEditor(typeof(InputCollectorManager), true)]
     public class InputCollectorManagerCustomInspector : Editor
     {
-        [MenuItem("BaseGameLogic/Inputs/Create InputCollectorManager")]
-        public static InputCollectorManager CreateInputCollectorManager()
-        {
-            return GameObjectExtension.CreateInstanceOfAbstractType<InputCollectorManager>();
-        }
-
         private InputCollectorManager inputCollectorManager = null;
         private ReorderableList list = null;
 

@@ -31,8 +31,22 @@ namespace BaseGameLogic.Inputs
             list.onAddCallback = AddElement;
             list.onRemoveCallback = RemoveElement;
             
-            _inputSourcesTypes = AssemblyExtension.GetDerivedTypes<BaseInputSource>();
-            _inputSourcesMenu = GenericMenuExtension.GenerateMenuFormTypes(_inputSourcesTypes, AddNewSource);
+            _inputSourcesTypes = InputCollectorManager.GetDerivedTypes<BaseInputSource>();
+            _inputSourcesMenu = GenerateMenuFormTypes(_inputSourcesTypes, AddNewSource);
+        } 
+
+        public GenericMenu GenerateMenuFormTypes(Type[] types, GenericMenu.MenuFunction2 function)
+        {
+            GenericMenu menu = new GenericMenu();
+
+            GUIContent content = null;
+            for (int i = 0; i < types.Length; i++)
+            {
+                content = new GUIContent(types[i].Name);
+                menu.AddItem(content, false, function, i);
+            }
+
+            return menu;
         }
 
         public override void OnInspectorGUI()
