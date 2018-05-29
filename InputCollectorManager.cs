@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-using BaseGameLogic.Singleton;
-using System;
-
 namespace BaseGameLogic.Inputs
 {
-	public class InputCollectorManager : Singleton<InputCollectorManager>
+	public class InputCollectorManager : MonoBehaviour
     {
+        public static InputCollectorManager Instance { get; private set; }
+
         [SerializeField, HideInInspector] private List<BaseInputCollector> _inputCollectors = new List<BaseInputCollector>();
         public BaseInputCollector this [int index] { get { return _inputCollectors[index]; } }
         public int Count { get { return _inputCollectors.Count; } }
@@ -19,9 +20,12 @@ namespace BaseGameLogic.Inputs
         /// </summary>
 		private Dictionary<int, BaseInputCollector> _inputCollectorsDictionary = new Dictionary<int, BaseInputCollector>();
         
-		protected override void Awake()
+		protected void Awake()
 		{
-            base.Awake();
+            if(Instance == null)
+                Instance = this;
+            else
+                Destroy(this.gameObject);
 
             // Creating dictionary from collected InputCollectors.
             for (int i = 0; i < _inputCollectors.Count; i++) 
@@ -48,7 +52,7 @@ namespace BaseGameLogic.Inputs
 
         public void AddInputCollector()
         {
-            Type[] types = AssemblyExtension.GetDerivedTypes<BaseInputCollector>();
+            Type[] types = GetDerivedTypes<BaseInputCollector>();
             if(types != null && types.Length > 0 && _inputCollectors.Count <= 0)
             {
                 GameObject gameObject = new GameObject();
@@ -67,7 +71,10 @@ namespace BaseGameLogic.Inputs
         public void AddInputCollector(GameObject inputCollectorPrefab, int playerID = -1)
         {
             BaseInputCollector inputCollector = Instantiate(inputCollectorPrefab, this.transform, false).GetComponent<BaseInputCollector>();
-            inputCollector.transform.Reset();
+            inputCollector.transform.position = Vector3.zero;
+            inputCollector.transform.rotation = Quaternion.identity;
+            inputCollector.transform.localScale = Vector3.zero;
+
             inputCollector.PlayerNumber = playerID > -1 ? playerID : _inputCollectorsDictionary.Count;
 
             inputCollector.gameObject.name = string.Format("Player {0}", inputCollector.PlayerNumber);
@@ -80,5 +87,21 @@ namespace BaseGameLogic.Inputs
             DestroyImmediate(_inputCollectors[index].gameObject);
             _inputCollectors.RemoveAt(index);
         }
-	}
+
+        /// <summary>
+        /// Returns all types that extend type T.
+        /// </summary>
+        /// <typeparam name="T">Base type.</typeparam>
+        /// <returns>List of derived types.</returns>
+        public static Type[] GetDerivedTypes<T>()
+        {
+            return GetDerivedTypes(typeof(T));
+        }
+
+        public static Type[] GetDerivedTypes(Type baseType)
+        {
+            return baseType.Assembly.GetTypes().Where(type => (type.IsSubclassOf(baseType) && !type.IsAbstract)).ToArray();
+        }
+
+    }
 }

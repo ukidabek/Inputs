@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using BaseGameLogic.Management;
 using UnityEngine.Events;
 
 namespace BaseGameLogic.Inputs
@@ -142,21 +141,20 @@ namespace BaseGameLogic.Inputs
 				return; 
 			
 			bool enablePause = CurrentInputSourceInstance.PauseButtonDown;
-			bool gameManagerExist = BaseGameManager.Instance != null;
-			if(gameManagerExist)
-			{
-				bool gameIsPlaying = BaseGameManager.Instance.GameStatus == GameStatusEnum.Play;
+			//if(BaseGameManager.Instance != null)
+			//{
+			//	bool gameIsPlaying = BaseGameManager.Instance.GameStatus == GameStatusEnum.Play;
 
-				if (enablePause && gameManagerExist && gameIsPlaying) 
-				{
-					BaseGameManager.Instance.PauseGame ();
-				}
+			//	if (enablePause && gameManagerExist && gameIsPlaying) 
+			//	{
+			//		BaseGameManager.Instance.PauseGame ();
+			//	}
 
-				if (enablePause && gameManagerExist && !gameIsPlaying) 
-				{
-					BaseGameManager.Instance.ResumeGame ();
-				}
-			}
+			//	if (enablePause && gameManagerExist && !gameIsPlaying) 
+			//	{
+			//		BaseGameManager.Instance.ResumeGame ();
+			//	}
+			//}
 		}
 
 		protected virtual void Awake()
