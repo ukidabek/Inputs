@@ -16,14 +16,7 @@ namespace BaseGameLogic.Inputs
 
         [SerializeField] private float toAnalogConversionSpeed = 1f;
 
-        public override bool PositiveReading
-        {
-            get 
-			{
-				return buttonState == ButtonStateEnum.Down ||
-					buttonState == ButtonStateEnum.Held;
-            }
-        }
+        public override bool PositiveReading { get { return buttonState == ButtonStateEnum.Down || buttonState == ButtonStateEnum.Held; } }
 
         public ButtonStateEnum State
         {
@@ -33,17 +26,7 @@ namespace BaseGameLogic.Inputs
 
 		public float AnalogTarget { get { return invert ? -1f : 1f; } }
 
-		public bool Pressed
-        {
-			get
-            {
-				ButtonStateEnum tmpButtonState = State;
-
-				return tmpButtonState == ButtonStateEnum.Down ||
-				tmpButtonState == ButtonStateEnum.Held;
-			}
-				
-		}
+		public bool Pressed { get { return State == ButtonStateEnum.Down || State == ButtonStateEnum.Held; } }
 
 		// Only for display in inspector.
         [SerializeField] private float anagloValue = 0f;

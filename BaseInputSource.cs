@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace BaseGameLogic.Inputs
 {
@@ -12,8 +13,7 @@ namespace BaseGameLogic.Inputs
     /// </summary>
 	public abstract class BaseInputSource : MonoBehaviour
 	{
-		[SerializeField]
-        [Tooltip("The reference to input collector that collect input from this source.")]
+		[Tooltip("The reference to input collector that collect input from this source."), SerializeField]
 		private BaseInputCollector _owner = null;
         /// <summary>
         /// The reference to input collector that collect input from this source.
@@ -40,16 +40,14 @@ namespace BaseGameLogic.Inputs
 		{
 			get 
 			{
-				foreach (PhysicalInput input in physicalInputs) 
-				{
-					if (input.PositiveReading)
-						return true;
-				}
+                for (int i = 0; i < physicalInputs.Count; i++)
+                    if (physicalInputs[i].PositiveReading)
+                        return true;
 
 				return false;
 			} 
 		}
-
+         
         /// <summary>
         /// Vector used for controlling player motion (WASD, left analog on game pad).
         /// </summary>
@@ -60,44 +58,36 @@ namespace BaseGameLogic.Inputs
         /// </summary>
 		public virtual Vector3 TriggersVector { get { return Vector3.zero; } }
 
-		[Header("Look axis sensitivity settings")]
-		[SerializeField]
-        [Tooltip("Sensitivity of x look axis.")]
-		public float xLookAxisSensitivity = 3f;
-		[SerializeField]
-        [Tooltip("Sensitivity of y look axis.")]
-		public float yLookAxisSensitivity = 3f;
-
         /// <summary>
         /// Vector used for controlling camera motion (mouse, right analog on game pad).
         /// </summary>
         public virtual Vector3 LookVector { get { return Vector3.zero; } }
 
-        [SerializeField]
-        private ButtonInput _pauseButton = new ButtonInput();
-
+        [SerializeField] private ButtonInput _pauseButton = new ButtonInput();
         /// <summary>
         /// Is true if the pause button for this InputSource is pressed. 
         /// </summary>
-		public virtual bool PauseButtonDown
-		{
-			get { return _pauseButton.Pressed; }
-		}
+		public virtual bool PauseButtonDown { get { return _pauseButton.Pressed; } }
 
 		protected virtual void Awake ()
 		{
-			if (physicalInputs.Count == 0) 
-			{
-				Debug.LogError ("No input detected. Add input source and set inputs");
-			}
+            Type type = this.GetType();
 
-            physicalInputs.Add(_pauseButton);
-
-            for (int i = 0; i < physicalInputs.Count; i++)
+            do
             {
-                PhysicalInput input = physicalInputs[i];
-                input.SetOwner(this);
+                var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
+
+                for (int i = 0; i < fields.Length; i++)
+                    if (fields[i].FieldType.BaseType == typeof(PhysicalInput))
+                        physicalInputs.Add(fields[i].GetValue(this) as PhysicalInput);
+
+                type = type.BaseType;
             }
+            while (type != typeof(BaseInputSource).BaseType);
+
+
+            if (physicalInputs.Count == 0) 
+				Debug.LogError ("No input detected. Add input source and set inputs");
 		}
 
 		protected virtual void Start() {}

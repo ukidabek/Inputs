@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections;
+
 namespace BaseGameLogic.Inputs
 {
 	/// <summary>
@@ -10,13 +11,6 @@ namespace BaseGameLogic.Inputs
 	[Serializable]
 	public abstract class PhysicalInput  
 	{
-		/// <summary>
-		/// The owner reference to a input.
-		/// </summary>
-		protected BaseInputSource owner = null;
-		public BaseInputSource Owner {
-			get { return owner; }
-		}
 		/// <summary>
 		/// The name of the input.
 		/// </summary>
@@ -29,26 +23,14 @@ namespace BaseGameLogic.Inputs
 		}
 
 		/// <summary>
-		/// Gets a value indicating whether this <see cref="BaseGameLogic.Inputs.AnalogInput"/> was read.
+		/// Indicating whether this input was read or no.
 		/// </summary>
 		/// <value><c>true</c> if positive reading; otherwise, <c>false</c>.</value>
-		public abstract bool PositiveReading
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Sets the owner PhysicalInput.
-		/// </summary>
-		/// <param name="owner">Owner.</param>
-		public void SetOwner(BaseInputSource owner)
-		{
-			this.owner = owner;
-		}
+		public abstract bool PositiveReading { get; }
 
 		/// <summary>
 		/// It defines how the input is read
 		/// </summary>
 		public abstract void Read();
-	}
+    }
 }
