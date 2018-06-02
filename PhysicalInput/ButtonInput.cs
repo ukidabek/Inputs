@@ -32,8 +32,8 @@ namespace BaseGameLogic.Inputs
         [SerializeField] private float anagloValue = 0f;
         public float AnagloValue
         {
-            get {
-
+            get
+            {
 				if (Pressed)
                 {
                     return anagloValue = Mathf.MoveTowards(
@@ -49,7 +49,6 @@ namespace BaseGameLogic.Inputs
                         toAnalogConversionSpeed * Time.deltaTime);
                 }
             }
-
 			set { anagloValue = value; }
         }
 
@@ -60,26 +59,26 @@ namespace BaseGameLogic.Inputs
 			WasPressed = IsPressed;
 			IsPressed = Input.GetKey(keyCode);
 
-			if (!IsPressed && !WasPressed)
-			{
-				buttonState = ButtonStateEnum.Released;
-				return;
-			} 
-			else if (IsPressed && !WasPressed)
-			{
-				buttonState = ButtonStateEnum.Down;
-				return;
-			} 
-			else if (IsPressed && WasPressed)
-			{
-				buttonState = ButtonStateEnum.Held;
-				return;
-			} 
-			else if (!IsPressed && WasPressed)
-			{
-				buttonState = ButtonStateEnum.Up;
-				return;
-			}
+            buttonState = GetStatus(WasPressed, IsPressed);
     	}
+
+        public void SetStatus(bool wasPressed, bool isPressed)
+        {
+            buttonState = GetStatus(wasPressed, isPressed);
+        }
+
+        private ButtonStateEnum GetStatus(bool wasPressed, bool isPressed)
+        {
+            if (!isPressed && !wasPressed)
+                return ButtonStateEnum.Released;
+            else if (isPressed && !wasPressed)
+                return ButtonStateEnum.Down;
+            else if (isPressed && wasPressed)
+                return ButtonStateEnum.Held;
+            else if (!isPressed && wasPressed)
+                return ButtonStateEnum.Up;
+
+            return ButtonStateEnum.Released;
+        }
     }
 }
