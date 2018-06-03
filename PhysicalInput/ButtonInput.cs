@@ -35,19 +35,9 @@ namespace BaseGameLogic.Inputs
             get
             {
 				if (Pressed)
-                {
-                    return anagloValue = Mathf.MoveTowards(
-                        anagloValue, 
-                        AnalogTarget, 
-                        toAnalogConversionSpeed * Time.deltaTime);
-                }
+                    return anagloValue = Mathf.MoveTowards(anagloValue, AnalogTarget, toAnalogConversionSpeed * Time.deltaTime);
                 else
-                {
-                    return anagloValue = Mathf.MoveTowards(
-                        anagloValue, 
-                        0f, 
-                        toAnalogConversionSpeed * Time.deltaTime);
-                }
+                    return anagloValue = Mathf.MoveTowards(anagloValue, 0f, toAnalogConversionSpeed * Time.deltaTime);
             }
 			set { anagloValue = value; }
         }
