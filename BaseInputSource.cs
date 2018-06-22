@@ -13,8 +13,8 @@ namespace BaseGameLogic.Inputs
     /// </summary>
 	public abstract class BaseInputSource : MonoBehaviour
 	{
-		[Tooltip("The reference to input collector that collect input from this source."), SerializeField]
-		private BaseInputCollector _owner = null;
+		[Tooltip("The reference to input collector that collect input from this source.")]
+        [SerializeField] private BaseInputCollector _owner = null;
         /// <summary>
         /// The reference to input collector that collect input from this source.
         /// </summary>

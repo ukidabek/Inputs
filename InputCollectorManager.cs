@@ -15,9 +15,6 @@ namespace BaseGameLogic.Inputs
         public BaseInputCollector this [int index] { get { return _inputCollectors[index]; } }
         public int Count { get { return _inputCollectors.Count; } }
 
-        /// <summary>
-        /// 
-        /// </summary>
 		private Dictionary<int, BaseInputCollector> _inputCollectorsDictionary = new Dictionary<int, BaseInputCollector>();
         
 		protected void Awake()

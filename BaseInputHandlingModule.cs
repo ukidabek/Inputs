@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
 
-using System.Collections;
-using System.Collections.Generic;
-
-using BaseGameLogic.Inputs;
 using BaseGameLogic.Character;
 
 namespace BaseGameLogic.Inputs
@@ -52,6 +48,5 @@ namespace BaseGameLogic.Inputs
         {
             _currentinputSourceDefinition = ConvertToInputSourceDefinition(source);
         }
-
     }
 }

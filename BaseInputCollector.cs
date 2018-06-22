@@ -8,15 +8,13 @@ using UnityEngine.Events;
 
 namespace BaseGameLogic.Inputs
 {
-    public abstract class BaseInputCollector : MonoBehaviour 
+    public abstract class BaseInputCollector : MonoBehaviour
     {
         private const string Input_KeyCode_Error_Message = "Input is not assigned to KeyCode!: Input Name {0} {1}";
         private const string No_Input_Sources_Error_Message = "No input sources! Add input sources!";
 
-		[SerializeField]
-        [Range(0,7)]
         [Tooltip("Number of player that InputCollector will be assigned do.")]
-		private int _playerNumber = 0;
+		[SerializeField,Range(0,7)] private int _playerNumber = 0;
         /// <summary>
         /// If more the one local play is used to bound InputCollector to HellspawnPlayerController  by player number.
         /// </summary>
@@ -48,12 +46,8 @@ namespace BaseGameLogic.Inputs
 
         public event Action<BaseInputSource> InputSourceChanged = null;
 
-        [SerializeField, HideInInspector]
-        private List<BaseInputSource> inputSources = new List<BaseInputSource>();
-        /// <summary>
-        /// List of InputSources from which InputCollector will collect input.
-        /// </summary>
-        // public List<BaseInputSource> InputSources { get { return this.inputSources; } }
+        [HideInInspector]
+        [SerializeField] private List<BaseInputSource> inputSources = new List<BaseInputSource>();
 
         public BaseInputSource this[int i]
         {
@@ -66,12 +60,10 @@ namespace BaseGameLogic.Inputs
         /// Returns true if GamePad if connected.
         /// </summary>
         /// <returns></returns>
-		public bool IsPadConnected ()
+        public bool IsPadConnected ()
 		{
 			if (Input.GetJoystickNames().Length == 0 || string.IsNullOrEmpty(Input.GetJoystickNames()[0]))
-			{
 				return false;
-			}
 			return true;
 		}
 
@@ -86,9 +78,7 @@ namespace BaseGameLogic.Inputs
             {
 			    CurrentInputSourceInstance = source;
                 if(InputSourceChanged != null)
-                {
                     InputSourceChanged(source);
-                }
             }
 		}
 
@@ -104,9 +94,7 @@ namespace BaseGameLogic.Inputs
 				{
 					source.ReadInputs ();
 					if (source.PositiveReading)
-					{
 						SelectCurrentInputSourceInstance (source);
-					}
 				}
 			}
 		}
@@ -122,12 +110,8 @@ namespace BaseGameLogic.Inputs
 				{
 					PhysicalInput input = this[i].PhysicalInputs [j];
 					if (input is ButtonInput) 
-					{
 						if ((input as ButtonInput).keyCode == KeyCode.None) 
-						{
 							Debug.LogErrorFormat (Input_KeyCode_Error_Message, this[i].GetType(), input.InputName);
-						}
-					}
 				}
 			}
 		}
@@ -139,41 +123,19 @@ namespace BaseGameLogic.Inputs
 		{
 			if (CurrentInputSourceInstance == null)
 				return; 
-			
-			bool enablePause = CurrentInputSourceInstance.PauseButtonDown;
-			//if(BaseGameManager.Instance != null)
-			//{
-			//	bool gameIsPlaying = BaseGameManager.Instance.GameStatus == GameStatusEnum.Play;
-
-			//	if (enablePause && gameManagerExist && gameIsPlaying) 
-			//	{
-			//		BaseGameManager.Instance.PauseGame ();
-			//	}
-
-			//	if (enablePause && gameManagerExist && !gameIsPlaying) 
-			//	{
-			//		BaseGameManager.Instance.ResumeGame ();
-			//	}
-			//}
 		}
 
 		protected virtual void Awake()
 		{
 			for (int i = 0; i < Count; i++) 
-			{
                 this[i].Owner = this;
-			}
 
             if (inputSources.Count > 0)
-            {
                 SelectCurrentInputSourceInstance(this[0]);
-            }
             else
-            {
                 // Exeption! 
                 Debug.LogError(No_Input_Sources_Error_Message);
-            }
-		}
+        }
 			
         public void Update()
         {
@@ -182,6 +144,7 @@ namespace BaseGameLogic.Inputs
         }
 
 #if UNITY_EDITOR
+
 		private GameObject CreateInputSourceHolder(string name)
 		{
             GameObject gameObject = new GameObject();
@@ -219,6 +182,7 @@ namespace BaseGameLogic.Inputs
 				DestroyImmediate(this[index].gameObject);
             inputSources.RemoveAt(index);
         }
+
 #endif
     }
 }
