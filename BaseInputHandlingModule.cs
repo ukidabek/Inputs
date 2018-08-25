@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 
-using BaseGameLogic.Character;
-
 namespace BaseGameLogic.Inputs
 {
     public abstract class BaseInputHandlingModule<T> : MonoBehaviour where T : BaseInputSource
     {
-        [SerializeField] protected PlayerCharacterController _playerController = null;
+        [SerializeField] protected int _playerID = 0;
 
-        [SerializeField] protected T _currentinputSourceDefinition = null;
+        [SerializeField] private T _currentinputSource = null;
+        public T CurrentInputSource { get { return _currentinputSource; } }
 
         [SerializeField] protected BaseInputCollector inputCollector = null;
         public BaseInputCollector InputCollector
@@ -28,8 +27,8 @@ namespace BaseGameLogic.Inputs
         {
             if (InputCollectorManager.Instance != null)
             {
-                InputCollector = InputCollectorManager.Instance.GetInputCollector(_playerController.PlayerNumber);
-                _currentinputSourceDefinition = ConvertToInputSourceDefinition(InputCollector.CurrentInputSourceInstance);
+                InputCollector = InputCollectorManager.Instance.GetInputCollector(_playerID);
+                _currentinputSource = ConvertToInputSourceDefinition(InputCollector.CurrentInputSourceInstance);
 
                 InputCollector.InputSourceChanged -= InputSourceChanged;
                 InputCollector.InputSourceChanged += InputSourceChanged;
@@ -46,7 +45,7 @@ namespace BaseGameLogic.Inputs
 
         private void InputSourceChanged(BaseInputSource source)
         {
-            _currentinputSourceDefinition = ConvertToInputSourceDefinition(source);
+            _currentinputSource = ConvertToInputSourceDefinition(source);
         }
     }
 }

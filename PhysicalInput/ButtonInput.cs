@@ -4,13 +4,12 @@ using System;
 using System.Collections;
 namespace BaseGameLogic.Inputs
 {
-    [Serializable]
-    public class ButtonInput : PhysicalInput
+    [Serializable] public class ButtonInput : PhysicalInput
     {
         private bool IsPressed = false;
         private bool WasPressed = false;
 
-        [SerializeField] private ButtonStateEnum buttonState = ButtonStateEnum.Released;
+        [SerializeField] protected ButtonStateEnum buttonState = ButtonStateEnum.Released;
 
         [SerializeField] public bool invert = false;
 
@@ -18,18 +17,13 @@ namespace BaseGameLogic.Inputs
 
         public override bool PositiveReading { get { return buttonState == ButtonStateEnum.Down || buttonState == ButtonStateEnum.Held; } }
 
-        public ButtonStateEnum State
-        {
-			get { return buttonState; }
-			set { buttonState = value;}
-        }
+        public virtual ButtonStateEnum State { get { return buttonState; } }
 
 		public float AnalogTarget { get { return invert ? -1f : 1f; } }
 
 		public bool Pressed { get { return State == ButtonStateEnum.Down || State == ButtonStateEnum.Held; } }
 
-		// Only for display in inspector.
-        [SerializeField] private float anagloValue = 0f;
+        [SerializeField] private float anagloValue;
         public float AnagloValue
         {
             get
@@ -39,12 +33,29 @@ namespace BaseGameLogic.Inputs
                 else
                     return anagloValue = Mathf.MoveTowards(anagloValue, 0f, toAnalogConversionSpeed * Time.deltaTime);
             }
-			set { anagloValue = value; }
+        }
+
+        public float AnalogValueRaw
+        {
+            get
+            {
+                if (Pressed)
+                    return anagloValue = AnalogTarget;
+                else
+                    return anagloValue = 0;
+            }
         }
 
         [SerializeField] public KeyCode keyCode;
 
-		public override void Read ()
+        public ButtonInput() {}
+
+        public ButtonInput(KeyCode keyCode)
+        {
+            this.keyCode = keyCode;
+        }
+
+        public override void Read ()
     	{
 			WasPressed = IsPressed;
 			IsPressed = Input.GetKey(keyCode);
@@ -57,7 +68,7 @@ namespace BaseGameLogic.Inputs
             buttonState = GetStatus(wasPressed, isPressed);
         }
 
-        private ButtonStateEnum GetStatus(bool wasPressed, bool isPressed)
+        public static ButtonStateEnum GetStatus(bool wasPressed, bool isPressed)
         {
             if (!isPressed && !wasPressed)
                 return ButtonStateEnum.Released;

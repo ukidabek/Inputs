@@ -78,7 +78,7 @@ namespace BaseGameLogic.Inputs
                 var fields = type.GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
 
                 for (int i = 0; i < fields.Length; i++)
-                    if (fields[i].FieldType.BaseType == typeof(PhysicalInput))
+                    if (fields[i].FieldType.IsSubclassOf(typeof(PhysicalInput)))
                         physicalInputs.Add(fields[i].GetValue(this) as PhysicalInput);
 
                 type = type.BaseType;
