@@ -18,23 +18,18 @@ namespace BaseGameLogic.Inputs
         {
             base.OnPointerDown(eventData);
             _isHeald = true;
-            Debug.Log(_isHeald);
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
             _isHeald = false;
-            Debug.Log(_isHeald);
-
         }
 
         private void Update()
         {
             _state = ButtonInput.GetStatus(_oldIsHeald, _isHeald);
             _oldIsHeald = _isHeald;
-
-            Debug.Log(_state);
         }
     }
 }
