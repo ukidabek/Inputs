@@ -1,6 +1,6 @@
 ﻿namespace BaseGameLogic.Inputs
 {
-	public enum ButtonStateEnum 
+	public enum InputStateEnum 
 	{
 		Down,
 	    Held,

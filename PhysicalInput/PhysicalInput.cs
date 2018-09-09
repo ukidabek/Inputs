@@ -28,9 +28,11 @@ namespace BaseGameLogic.Inputs
 		/// <value><c>true</c> if positive reading; otherwise, <c>false</c>.</value>
 		public abstract bool PositiveReading { get; }
 
-		/// <summary>
-		/// It defines how the input is read
-		/// </summary>
-		public abstract void Read();
+        public virtual InputStateEnum State { get { return InputStateEnum.Released; } }
+
+        /// <summary>
+        /// It defines how the input is read
+        /// </summary>
+        public abstract void Read();
     }
 }

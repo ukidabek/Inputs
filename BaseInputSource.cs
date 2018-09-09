@@ -9,7 +9,7 @@ namespace BaseGameLogic.Inputs
 {
     /// <summary>
     /// Base Input source class. Classes with will extend that class will be used for handling
-    /// a input device like kay board, game pad or mouse.
+    /// a input device like key board, game pad or mouse.
     /// </summary>
 	public abstract class BaseInputSource : MonoBehaviour
 	{
@@ -54,7 +54,7 @@ namespace BaseGameLogic.Inputs
 		public virtual Vector3 MovementVector { get { return Vector3.zero; } }
 
         /// <summary>
-        /// Vector containing a analog valeuse (greater then 0 or less) reader from game pad triggers.
+        /// Vector containing a analog values (greater then 0 or less) reader from game pad triggers.
         /// </summary>
 		public virtual Vector3 TriggersVector { get { return Vector3.zero; } }
 

@@ -11,8 +11,8 @@ namespace BaseGameLogic.Inputs
         private bool _isHeald = false;
         private bool _oldIsHeald = false;
 
-        private ButtonStateEnum _state = ButtonStateEnum.Released;
-        public ButtonStateEnum State { get { return _state; } }
+        private InputStateEnum _state = InputStateEnum.Released;
+        public InputStateEnum State { get { return _state; } }
 
         public override void OnPointerDown(PointerEventData eventData)
         {

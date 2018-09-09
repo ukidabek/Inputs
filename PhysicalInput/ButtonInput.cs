@@ -9,19 +9,19 @@ namespace BaseGameLogic.Inputs
         private bool IsPressed = false;
         private bool WasPressed = false;
 
-        [SerializeField] protected ButtonStateEnum buttonState = ButtonStateEnum.Released;
+        [SerializeField] protected InputStateEnum buttonState = InputStateEnum.Released;
 
         [SerializeField] public bool invert = false;
 
         [SerializeField] private float toAnalogConversionSpeed = 1f;
 
-        public override bool PositiveReading { get { return buttonState == ButtonStateEnum.Down || buttonState == ButtonStateEnum.Held; } }
+        public override bool PositiveReading { get { return buttonState == InputStateEnum.Down || buttonState == InputStateEnum.Held; } }
 
-        public virtual ButtonStateEnum State { get { return buttonState; } }
+        public override InputStateEnum State { get { return buttonState; } }
 
 		public float AnalogTarget { get { return invert ? -1f : 1f; } }
 
-		public bool Pressed { get { return State == ButtonStateEnum.Down || State == ButtonStateEnum.Held; } }
+		public bool Pressed { get { return State == InputStateEnum.Down || State == InputStateEnum.Held; } }
 
         [SerializeField] private float anagloValue;
         public float AnagloValue
@@ -68,18 +68,18 @@ namespace BaseGameLogic.Inputs
             buttonState = GetStatus(wasPressed, isPressed);
         }
 
-        public static ButtonStateEnum GetStatus(bool wasPressed, bool isPressed)
+        public static InputStateEnum GetStatus(bool wasPressed, bool isPressed)
         {
             if (!isPressed && !wasPressed)
-                return ButtonStateEnum.Released;
+                return InputStateEnum.Released;
             else if (isPressed && !wasPressed)
-                return ButtonStateEnum.Down;
+                return InputStateEnum.Down;
             else if (isPressed && wasPressed)
-                return ButtonStateEnum.Held;
+                return InputStateEnum.Held;
             else if (!isPressed && wasPressed)
-                return ButtonStateEnum.Up;
+                return InputStateEnum.Up;
 
-            return ButtonStateEnum.Released;
+            return InputStateEnum.Released;
         }
     }
 }
