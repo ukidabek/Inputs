@@ -10,7 +10,6 @@ namespace BaseGameLogic.Inputs
 {
     public abstract class BaseInputCollector : MonoBehaviour
     {
-        private const string Input_KeyCode_Error_Message = "Input is not assigned to KeyCode!: Input Name {0} {1}";
         private const string No_Input_Sources_Error_Message = "No input sources! Add input sources!";
 
         [Tooltip("Number of player that InputCollector will be assigned do.")]
@@ -46,8 +45,7 @@ namespace BaseGameLogic.Inputs
 
         public event Action<BaseInputSource> InputSourceChanged = null;
 
-        [HideInInspector]
-        [SerializeField] private List<BaseInputSource> inputSources = new List<BaseInputSource>();
+        [HideInInspector][SerializeField] private List<BaseInputSource> inputSources = new List<BaseInputSource>();
 
         public BaseInputSource this[int i]
         {
@@ -95,23 +93,6 @@ namespace BaseGameLogic.Inputs
 					source.ReadInputs ();
 					if (source.PositiveReading)
 						SelectCurrentInputSourceInstance (source);
-				}
-			}
-		}
-
-        /// <summary>
-        /// Check the correctness of the input configuration.
-        /// </summary>
-		public void CheckInputs ()
-		{
-			for (int i = 0; i < Count; i++) 
-			{
-				for (int j = 0; j < this[i].PhysicalInputs.Count; j++) 
-				{
-					PhysicalInput input = this[i].PhysicalInputs [j];
-					if (input is ButtonInput) 
-						if ((input as ButtonInput).keyCode == KeyCode.None) 
-							Debug.LogErrorFormat (Input_KeyCode_Error_Message, this[i].GetType(), input.InputName);
 				}
 			}
 		}

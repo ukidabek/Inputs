@@ -64,10 +64,6 @@ namespace BaseGameLogic.Inputs
         public virtual Vector3 LookVector { get { return Vector3.zero; } }
 
         [SerializeField] private ButtonInput _pauseButton = new ButtonInput();
-        /// <summary>
-        /// Is true if the pause button for this InputSource is pressed. 
-        /// </summary>
-		public virtual bool PauseButtonDown { get { return _pauseButton.Pressed; } }
 
 		protected virtual void Awake ()
 		{
@@ -103,29 +99,5 @@ namespace BaseGameLogic.Inputs
                 input.Read();
             }
 		}
-
-        /// <summary>
-        /// Return the PhysicalInput of type T by it’s name.
-        /// </summary>
-        /// <typeparam name="T">Type extending PhysicalInput.</typeparam>
-        /// <param name="name">Name of input</param>
-        /// <returns>PhysicalInput</returns>
-		public T GetPhysicalInput<T> (string name) where T:PhysicalInput
-		{
-			T _input = null;
-			foreach (PhysicalInput input in physicalInputs) 
-			{
-				if (input is T && input.InputName.Equals (name))
-				{
-					_input = input as T;
-					break;
-				}
-			}
-
-			if (_input == null)
-				throw new NoPhysicalInputException(name, typeof(T));
-
-			return _input;
-		}	                           
 	}
 }
