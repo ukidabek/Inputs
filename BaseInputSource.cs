@@ -63,8 +63,6 @@ namespace BaseGameLogic.Inputs
         /// </summary>
         public virtual Vector3 LookVector { get { return Vector3.zero; } }
 
-        [SerializeField] private ButtonInput _pauseButton = new ButtonInput();
-
 		protected virtual void Awake ()
 		{
             Type type = this.GetType();
