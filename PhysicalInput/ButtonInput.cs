@@ -25,8 +25,8 @@ namespace BaseGameLogic.Inputs
         public override void Read ()
     	{
             if (_isKeyDown = Input.GetKeyDown(_keyCode)) OnKeyDown.Invoke();
-            if (_isKey = Input.GetKey(_keyCode)) OnKeyDown.Invoke();
-            if (_isKeyUp = Input.GetKeyUp(_keyCode)) OnKeyDown.Invoke();
+            if (_isKey = Input.GetKey(_keyCode)) OnKey.Invoke();
+            if (_isKeyUp = Input.GetKeyUp(_keyCode)) OnKeyUp.Invoke();
         }
     }
 }
